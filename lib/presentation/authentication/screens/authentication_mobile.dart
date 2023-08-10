@@ -1,55 +1,36 @@
 import 'package:find_scan_return_app/app/di.dart';
+import 'package:find_scan_return_app/presentation/resources/assets_manager.dart';
+import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
+import 'package:find_scan_return_app/presentation/resources/size_config.dart';
+import 'package:find_scan_return_app/presentation/resources/strings_manager.dart';
+import 'package:find_scan_return_app/presentation/resources/style_constants.dart';
+import 'package:find_scan_return_app/presentation/widgets/buttons/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../widgets/widget/menu_item.dart';
-import '../Login screens/login_body.dart';
+import 'package:go_router/go_router.dart';
 import '../authentication cubit/authentication_cubit.dart';
-import '../register screens/register_body.dart';
 
-class LoginPageMobile extends StatefulWidget {
-  final String? from;
-  const LoginPageMobile({super.key, this.from});
+class LoginPageMobile extends StatelessWidget {
+  LoginPageMobile({super.key});
 
-  @override
-  State<LoginPageMobile> createState() => _LoginPageMobileState();
-}
-
-class _LoginPageMobileState extends State<LoginPageMobile> {
   final AuthenticationCubit authenticationCubit = sl<AuthenticationCubit>();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.from == "GenerateOkrButton") {
-      authenticationCubit.toogle(false);
-    } else if (widget.from == "SignInButton") {
-      authenticationCubit.toogle(true);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFf5f5f5),
       body: BlocBuilder<AuthenticationCubit, AuthenticationState>(
         bloc: authenticationCubit,
         builder: (context, state) {
           return ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 8),
             children: [
-              Menu(
-                authenticationCubit: authenticationCubit,
-                isSignIn: state.isSignIn,
+              SizedBox(
+                height: getProportionateScreenHeight(20),
               ),
-              state.isSignIn
-                  ? Body(
-                      authenticationCubit: authenticationCubit,
-                    )
-                  : RegisterBody(
-                      authenticationCubit: authenticationCubit,
-                    )
+              SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.8,
+                  height: getProportionateScreenHeight(250),
+                  child: Image.asset(ImageAssets.logo)),
+              const AuthenticationCard()
             ],
           );
         },
@@ -58,33 +39,67 @@ class _LoginPageMobileState extends State<LoginPageMobile> {
   }
 }
 
-class Menu extends StatelessWidget {
-  final bool isSignIn;
-  final AuthenticationCubit authenticationCubit;
-  const Menu(
-      {super.key, required this.authenticationCubit, required this.isSignIn});
+class AuthenticationCard extends StatelessWidget {
+  const AuthenticationCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          MenuItem(
-            title: 'Sign In',
-            isActive: isSignIn,
-            press: () {
-              authenticationCubit.toogle(true);
-            },
-          ),
-          MenuItem(
-              title: 'Register',
-              isActive: !isSignIn,
-              press: () {
-                authenticationCubit.toogle(false);
-              }),
-        ],
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width * 0.8,
+      height: getProportionateScreenHeight(300),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        elevation: 5,
+        margin: const EdgeInsets.all(10),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: getProportionateScreenHeight(10),
+              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                child: Text(
+                  AppStrings.alreadyAccount,
+                  style: labelStyle,
+                ),
+              ),
+              SizedBox(
+                height: getProportionateScreenHeight(10),
+              ),
+              DefaultButton(
+                loading: false,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                text: AppStrings.loginText,
+                press: () {
+                  context.pushNamed(Routes.signIn);
+                },
+              ),
+              SizedBox(
+                height: getProportionateScreenHeight(30),
+              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                child: Text(
+                  AppStrings.newAccount,
+                  style: labelStyle,
+                ),
+              ),
+              SizedBox(
+                height: getProportionateScreenHeight(10),
+              ),
+              DefaultButton(
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                loading: false,
+                text: AppStrings.scanQr,
+                press: () {
+                  context.goNamed(Routes.qrScanner);
+                },
+              ),
+            ]),
       ),
     );
   }

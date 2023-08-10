@@ -10,9 +10,9 @@ final headingStyle = TextStyle(
   height: 1.5,
 );
 final labelStyle = TextStyle(
-  fontSize: getProportionateScreenWidth(8),
+  fontSize: getProportionateScreenWidth(16),
   fontWeight: FontWeight.bold,
-  color: Colors.black,
+  color: Colors.grey[800],
   height: 1,
 );
 final topicStyleWeb = TextStyle(

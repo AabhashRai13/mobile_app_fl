@@ -20,11 +20,15 @@ class AppStrings {
   static const String continueText = "Continue";
   static const String logOut = "Log out";
   static const String loginText = "Login";
+  static const String alreadyAccount =
+      "If you already have an account please log in.";
+  static const String newAccount =
+      "If you want to register as new user please scan the Qr first";
   static const String userName = "User Name";
   static const String enterUserName = "Enter your User Name";
   static const String passwordNotMatch = "Password aren't same";
   static const String otpCode = "OTP";
-  static const String verification = "Verify Mobile";
+  static const String verification = "QrCode Verification";
   static const String otpScreenText =
       "A text verification code has been sent to your mobile ";
   static const String otpScreenText2 = "Didn't receive a code?";
@@ -87,21 +91,20 @@ class AppStrings {
 
   static const String phone = "Mobile";
   static const String enterPhoneNumber = "Enter Phone number";
-
-  //// okr table fields
-  static const String kra = "KRAs";
-  static const String initiatives = "Initiatives";
+  static const String waitWhileVerified =
+      "Your QrCode is being verified, this may take a while.";
 
   static const String edit = "Edit";
   static const String delete = "Delete";
   static const String save = "Save";
   static const String downloadQrCodes = "Download QR Codes";
   static const String createQr = "Create Qr";
-static const String createQrByButton = "Create Qr Using the Big Button";
+  static const String createQrByButton = "Create Qr Using the Big Button";
   static const String enterTheNumberOfQr =
       "Please enter the number of QR you want to create.";
 
   static const String somethingWentWrong = "Something Went Wrong";
   static const String batchNumber = "Batch number";
   static const String dateGenerated = "Generated Date";
+  static const String scanQr = "Scan Qr";
 }
