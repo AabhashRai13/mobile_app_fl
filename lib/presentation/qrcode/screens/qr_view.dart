@@ -45,7 +45,7 @@ class QRCodeScanerView extends StatefulWidget {
 
 class _QRCodeScanerViewState extends State<QRCodeScanerView> {
   final QrBloc qrBloc = sl<QrBloc>();
-  QrService qrService = QrService();
+  final QrService qrService = sl<QrService>();
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // In order to get hot reload to work we need to pause the camera if the platform

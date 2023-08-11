@@ -81,6 +81,9 @@ class AppStrings {
   static const String confirmPassword = "Confirm Password";
   static const String reenterYourPassword = "Re-enter your password";
   static const String loginSuccess = "Login Success";
+    static const String qrIdScanError = "There was some error scanning your QrCode please try again.";
+      static const String qrIdNotValid = "Your Qr Id not valid, please try another card.";
+
   static const String enterName = "Enter your Name";
   static const String enterLastName = "Enter your Last Name";
 

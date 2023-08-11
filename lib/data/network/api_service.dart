@@ -46,4 +46,20 @@ class ApiService {
       return null;
     }
   }
+
+  Future<bool?> checkQrId(int qrId) async {
+    try {
+      final response = await dio.get(
+        '${AppConstants.devBaseURL}/qrCodes/check/$qrId',
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      log("Error $e");
+      return false;
+    }
+  }
 }
