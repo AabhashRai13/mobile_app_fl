@@ -6,6 +6,7 @@ import 'package:find_scan_return_app/domain/repositories/qrcode_repository.dart'
 import 'package:find_scan_return_app/domain/repositories/user_repository.dart';
 import 'package:find_scan_return_app/domain/usecases/get_user_usecase.dart';
 import 'package:find_scan_return_app/domain/usecases/is_qrid_valid_usecase.dart';
+import 'package:find_scan_return_app/domain/usecases/update_user_usecase.dart';
 import 'package:find_scan_return_app/presentation/qrVerification/cubit/qr_id_verification_cubit.dart';
 import 'package:find_scan_return_app/presentation/qrcode/bloc/qr_bloc.dart';
 import 'package:find_scan_return_app/presentation/qrcode/qrService/qr_service.dart';
@@ -58,6 +59,7 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<IsSignedInUsecase>(() => IsSignedInUsecase(sl()));
   sl.registerLazySingleton<IsQrIdValidUsecase>(() => IsQrIdValidUsecase(sl()));
   sl.registerLazySingleton<GetUserUsecase>(() => GetUserUsecase(sl()));
+  sl.registerLazySingleton<UpdateUserUsecase>(() => UpdateUserUsecase(sl()));
 
   /// services
   sl.registerLazySingleton<QrService>(() => QrService());
@@ -69,5 +71,5 @@ Future<void> initAppModule() async {
   sl.registerFactory<SignInBloc>(() => SignInBloc(sl()));
   sl.registerLazySingleton<QrBloc>(() => QrBloc());
   sl.registerFactory<QrIdVerificationCubit>(() => QrIdVerificationCubit(sl()));
-  sl.registerFactory<UserBloc>(() => UserBloc(sl()));
+  sl.registerLazySingleton<UserBloc>(() => UserBloc(sl(), sl()));
 }

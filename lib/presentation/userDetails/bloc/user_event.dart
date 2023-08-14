@@ -8,3 +8,8 @@ sealed class UserEvent extends Equatable {
 }
 
 class GetUserEvent extends UserEvent {}
+
+class UpdateUserEvent extends UserEvent {
+  final Authentication user;
+  const UpdateUserEvent({required this.user});
+}

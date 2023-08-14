@@ -8,6 +8,7 @@ import 'package:find_scan_return_app/presentation/home/screens/home.dart';
 import 'package:find_scan_return_app/presentation/qrVerification/qr_verification.dart';
 import 'package:find_scan_return_app/presentation/qrcode/screens/qr_view.dart';
 import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
+import 'package:find_scan_return_app/presentation/splashScreen/screen/splash_screen.dart';
 import 'package:find_scan_return_app/presentation/userDetails/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,12 +19,17 @@ class AppRouter {
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
     navigatorKey: _rootNavigatorKey,
-    initialLocation: Routes.initialScreenRoute,
+    initialLocation: Routes.splash,
     routes: [
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, state) => const Splash(),
+      ),
       GoRoute(
         path: Routes.initialScreenRoute,
         name: Routes.initialScreenRoute,
-        builder: (BuildContext context, state) => LoginPageMobile(),
+        builder: (BuildContext context, state) => const LoginPageMobile(),
       ),
       GoRoute(
         path: Routes.signIn,
@@ -70,15 +76,25 @@ class AppRouter {
   static Future<String?> redirect(BuildContext context, state) async {
     final IsSignedInUsecase isSignedInUsecase = sl<IsSignedInUsecase>();
     final bool loggedIn = await isSignedInUsecase.call();
-    final bool loggingIn = state.matchedLocation == Routes.initialScreenRoute;
-
-    if (!loggedIn && !loggingIn) {
+    final bool initialScreen =
+        state.matchedLocation == Routes.initialScreenRoute;
+    final bool loginForm = state.matchedLocation == Routes.signIn;
+    final bool siginUpForm = state.matchedLocation == Routes.signUp;
+    final bool qrScannerVerification =
+        state.matchedLocation == Routes.qrCodeVerificationScreen;
+    final bool qrScanner = state.matchedLocation == Routes.qrScanner;
+    if (!loggedIn &&
+        !initialScreen &&
+        !qrScanner &&
+        !qrScannerVerification &&
+        !loginForm &&
+        !siginUpForm) {
       return Routes.initialScreenRoute;
     }
 
     // if the user is logged in but still on the login page, send them to
     // the home page
-    if (loggedIn && loggingIn) {
+    if (loggedIn && initialScreen) {
       return Routes.home;
     }
 

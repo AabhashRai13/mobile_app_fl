@@ -31,7 +31,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           password: password!,
         ));
 
-        if (result!.accessToken != null) {
+        if (result != null) {
           sharedPreferencesManager.putBool(
               SharedPreferencesManager.keyIsLogin, true);
           log("----- User Id ${result.id}");
@@ -95,6 +95,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<bool> isSignedIn() async {
     String? token = await securedStorageManager.readAuthToken();
+    log("token $token");
     if (token != null) {
       return true;
     }

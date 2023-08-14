@@ -110,4 +110,6 @@ class AppStrings {
   static const String profile = "User profile";
   static const String memberSince = "Member since: ";
   static const String deleteUser = "Delete User";
+  static const String updateUser = "Update User";
+  static const String userUpdated = "User updated successfully";
 }

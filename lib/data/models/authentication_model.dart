@@ -43,6 +43,7 @@ class AuthenticationModel extends Authentication {
         v: json["__v"],
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         "username": username,
         "email": email,

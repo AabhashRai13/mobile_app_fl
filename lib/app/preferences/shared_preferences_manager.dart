@@ -7,13 +7,21 @@ class SharedPreferencesManager {
   static const String userId = 'userID';
   static const String keyUsername = 'username';
   static const String keyPhoneNumber = 'phonenumber';
-
+  static const String firstTime = "firstTime";
   static Future<SharedPreferencesManager> getInstance() async {
     _instance = SharedPreferencesManager();
 
     _sharedPreferences = await SharedPreferences.getInstance();
 
     return _instance;
+  }
+
+  Future<bool> setfirstTime() {
+    return _sharedPreferences.setBool(firstTime, true);
+  }
+
+  Future<bool?> isfirstTime() async {
+    return _sharedPreferences.getBool(firstTime);
   }
 
   Future<bool> putBool(String key, bool value) =>

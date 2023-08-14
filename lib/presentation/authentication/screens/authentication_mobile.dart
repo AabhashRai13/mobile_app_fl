@@ -10,10 +10,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../authentication cubit/authentication_cubit.dart';
 
-class LoginPageMobile extends StatelessWidget {
-  LoginPageMobile({super.key});
+class LoginPageMobile extends StatefulWidget {
+  const LoginPageMobile({super.key});
 
+  @override
+  State<LoginPageMobile> createState() => _LoginPageMobileState();
+}
+
+class _LoginPageMobileState extends State<LoginPageMobile> {
   final AuthenticationCubit authenticationCubit = sl<AuthenticationCubit>();
+ 
 
   @override
   Widget build(BuildContext context) {

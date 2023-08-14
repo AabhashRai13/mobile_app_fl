@@ -25,4 +25,12 @@ class Authentication {
       this.v,
       this.accessToken,
       this.phoneNumber});
+  Map<String, dynamic> toJson() => {
+        "username": username,
+        "email": email,
+        "isAdmin": isAdmin,
+        "isPrinter": isPrinter,
+        "updatedAt": updatedAt,
+        "phoneNumber": phoneNumber
+      };
 }

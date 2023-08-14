@@ -1,10 +1,16 @@
+import 'package:find_scan_return_app/app/constants/regx.dart';
+import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
 import 'package:find_scan_return_app/presentation/resources/assets_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
 import 'package:find_scan_return_app/presentation/resources/strings_manager.dart';
+import 'package:find_scan_return_app/presentation/userDetails/bloc/user_bloc.dart';
 import 'package:find_scan_return_app/presentation/userDetails/service/user_service.dart';
+import 'package:find_scan_return_app/presentation/widgets/buttons/default_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   final Authentication? users;
@@ -16,7 +22,9 @@ class UpdateProfileScreen extends StatefulWidget {
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final UserService userService = UserService();
-
+  final UserBloc _userBloc = sl<UserBloc>();
+  final formKey = GlobalKey<FormState>();
+  bool loading = false;
   @override
   void initState() {
     super.initState();
@@ -32,111 +40,150 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       appBar: AppBar(
         title: const Text(AppStrings.editProfile),
       ),
-      body: Form(
-        child: Container(
-          padding: EdgeInsets.all(getProportionateScreenHeight(8)),
-          child: Column(
-            children: [
-              // -- IMAGE with ICON
-              Stack(
+      body: BlocConsumer<UserBloc, UserState>(
+        bloc: _userBloc,
+        listener: (context, state) {
+          if (state is UserLoaded) {
+            loading = false;
+          } else if (state is Loading) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text(AppStrings.userUpdated)),
+            );
+            loading = true;
+            _userBloc.add(GetUserEvent());
+          } else if (state is Error) {
+            loading = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          } else {
+            loading = false;
+          }
+        },
+        builder: (context, state) {
+          return Form(
+            key: formKey,
+            child: Container(
+              padding: EdgeInsets.all(getProportionateScreenHeight(8)),
+              child: ListView(
                 children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child:
-                            const Image(image: AssetImage(ImageAssets.logo))),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: ColorManager.primary),
-                      child: const Icon(Icons.camera,
-                          color: Colors.black, size: 20),
+                  // -- IMAGE with ICON
+                  Center(
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: 120,
+                          height: 120,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: const Image(
+                                  image: AssetImage(ImageAssets.logo))),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: ColorManager.primary),
+                            child: const Icon(Icons.camera,
+                                color: Colors.black, size: 20),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 50),
+                  const SizedBox(height: 50),
 
-              // -- Form Fields
+                  // -- Form Fields
 
-              TextFormField(
-                controller: userService.usernameEditingController,
-                decoration: const InputDecoration(
-                    label: Text(AppStrings.enterUserName),
-                    prefixIcon: Icon(Icons.person)),
-              ),
-              SizedBox(height: getProportionateScreenHeight(10)),
-              TextFormField(
-                controller: userService.emailEditingController,
-                decoration: const InputDecoration(
-                    label: Text(AppStrings.enterEmail),
-                    prefixIcon: Icon(Icons.email_outlined)),
-              ),
-              SizedBox(height: getProportionateScreenHeight(10)),
-              TextFormField(
-                controller: userService.phoneEditingController,
-                decoration: const InputDecoration(
-                    label: Text(AppStrings.phoneNumberLabe),
-                    prefixIcon: Icon(Icons.phone)),
-              ),
-
-              const Spacer(),
-              // -- Form Submit Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorManager.primary,
-                      side: BorderSide.none,
-                      shape: const StadiumBorder()),
-                  child: const Text(
-                    "tEditProfile",
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        AppStrings.cannotBeEmpty;
+                      }
+                      return null;
+                    },
+                    controller: userService.usernameEditingController,
+                    decoration: const InputDecoration(
+                        label: Text(AppStrings.enterUserName),
+                        prefixIcon: Icon(Icons.person)),
                   ),
-                ),
-              ),
-              SizedBox(height: getProportionateScreenHeight(10)),
+                  SizedBox(height: getProportionateScreenHeight(10)),
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return AppStrings.emailValidationMSg;
+                      } else if (!emailValidatorRegExp.hasMatch(value)) {
+                        return AppStrings.emailNotValidValidationMSg;
+                      }
+                      return null;
+                    },
+                    controller: userService.emailEditingController,
+                    decoration: const InputDecoration(
+                        label: Text(AppStrings.enterEmail),
+                        prefixIcon: Icon(Icons.email_outlined)),
+                  ),
+                  SizedBox(height: getProportionateScreenHeight(10)),
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return AppStrings.phoneValidationMSg;
+                      } else if (!phoneValidation.hasMatch(value)) {
+                        return AppStrings.emailNotValidValidationMSg;
+                      }
+                      return null;
+                    },
+                    controller: userService.phoneEditingController,
+                    decoration: const InputDecoration(
+                        label: Text(AppStrings.phoneNumberLabe),
+                        prefixIcon: Icon(Icons.phone)),
+                  ),
+                  SizedBox(height: getProportionateScreenHeight(20)),
 
-              // -- Created Date and Delete Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text.rich(
+                  // -- Form Submit Button
+                  DefaultButton(
+                    text: AppStrings.updateUser,
+                    loading: loading,
+                    press: () {
+                      if (formKey.currentState!.validate()) {
+                        _userBloc.add(UpdateUserEvent(
+                            user: Authentication(
+                                email: userService.emailEditingController.text,
+                                isAdmin: false,
+                                isPrinter: false,
+                                username:
+                                    userService.usernameEditingController.text,
+                                phoneNumber:
+                                    userService.phoneEditingController.text,
+                                updatedAt: DateTime.now().toString())));
+                      }
+                    },
+                  ),
+                  SizedBox(height: getProportionateScreenHeight(10)),
+
+                  // -- Created Date and Delete Button
+                  Text.rich(
                     TextSpan(
                       text: AppStrings.memberSince,
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                       children: [
                         TextSpan(
-                            text: "From Sunday bruhhh",
-                            style: TextStyle(
+                            text: DateFormat().format(
+                                DateTime.parse(widget.users!.createdAt!)),
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 12))
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent.withOpacity(0.1),
-                        elevation: 0,
-                        foregroundColor: Colors.red,
-                        shape: const StadiumBorder(),
-                        side: BorderSide.none),
-                    child: const Text(AppStrings.delete),
-                  ),
+                  SizedBox(height: getProportionateScreenHeight(40)),
                 ],
               ),
-              SizedBox(height: getProportionateScreenHeight(40)),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

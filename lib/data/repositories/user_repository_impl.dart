@@ -42,4 +42,27 @@ class UserRepositoryImplementation extends UserRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Authentication>> updateUser(
+      Authentication user) async {
+    bool connection = await networkInfo.isConnected();
+    if (connection) {
+      try {
+        String? token = await securedStorageManager.readAuthToken();
+        String? userId = sharedPreferencesManager.getString("userID");
+        final result = await apiService.updateUser(token!, userId!, user);
+
+        if (result != null) {
+          return Right(result);
+        } else {
+          return Left(CredentialsFailure());
+        }
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
 }
