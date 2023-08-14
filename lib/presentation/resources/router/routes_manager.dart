@@ -5,4 +5,6 @@ class Routes {
   static const String home = "/home";
   static const String qrScanner = "/qrScan";
   static const String qrCodeVerificationScreen = "/qrScanVerification";
+  static const String updateUser = "updateUser";
+  
 }

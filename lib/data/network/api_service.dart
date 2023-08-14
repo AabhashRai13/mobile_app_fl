@@ -62,4 +62,24 @@ class ApiService {
       return false;
     }
   }
+
+  Future<Authentication?> getUser(String accessToken, String userId) async {
+    try {
+      final response =
+          await dio.get('${AppConstants.devBaseURL}/users/find/$userId',
+              options: Options(headers: {
+                'token': 'Bearer $accessToken',
+              }));
+
+      if (response.statusCode == 200) {
+        Authentication users = AuthenticationModel.fromJson(response.data);
+
+        return users;
+      }
+      return null;
+    } catch (e) {
+      log("Error $e");
+      return null;
+    }
+  }
 }

@@ -2,6 +2,7 @@ class Authentication {
   final String? username;
   final String? email;
   final String? password;
+  final String? phoneNumber;
   final bool isAdmin;
   final bool isPrinter;
   final String? qrId;
@@ -22,5 +23,6 @@ class Authentication {
       this.createdAt,
       this.updatedAt,
       this.v,
-      this.accessToken});
+      this.accessToken,
+      this.phoneNumber});
 }

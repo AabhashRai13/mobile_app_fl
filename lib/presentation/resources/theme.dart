@@ -1,3 +1,4 @@
+import 'package:find_scan_return_app/presentation/resources/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -48,15 +49,19 @@ TextTheme textTheme() {
 
 AppBarTheme appBarTheme() {
   return AppBarTheme(
-    color: ColorManager.primary,
-    elevation: 0,
-    iconTheme: const IconThemeData(color: Colors.white),
+    centerTitle: false,
+    color: Colors.white,
+    elevation: 1,
+    iconTheme: IconThemeData(color: ColorManager.primary),
     systemOverlayStyle: SystemUiOverlayStyle.dark,
-    toolbarTextStyle: const TextTheme(
-      titleLarge: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
+    toolbarTextStyle: TextTheme(
+      titleLarge: TextStyle(
+          color: const Color(0XFF8B8B8B),
+          fontSize: getProportionateScreenHeight(20)),
     ).bodyMedium,
-    titleTextStyle: const TextTheme(
-      titleLarge: TextStyle(color: Colors.white, fontSize: 18),
+    titleTextStyle: TextTheme(
+      titleLarge: TextStyle(
+          color: Colors.black, fontSize: getProportionateScreenHeight(20)),
     ).titleLarge,
   );
 }

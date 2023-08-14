@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/presentation/qrVerification/cubit/qr_id_verification_cubit.dart';
 import 'package:find_scan_return_app/presentation/qrcode/qrService/qr_service.dart';
+import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
 import 'package:find_scan_return_app/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class QrCodeVerification extends StatefulWidget {
   const QrCodeVerification({super.key});
@@ -41,7 +41,7 @@ class _QrCodeVerificationState extends State<QrCodeVerification> {
             Navigator.pop(context);
           } else if (state is QrIDVerification) {
             if (state.isValid) {
-              log("valid qr Id");
+              context.goNamed(Routes.signUp);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text(AppStrings.qrIdNotValid)),

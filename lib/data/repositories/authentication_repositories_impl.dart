@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:find_scan_return_app/app/preferences/secured_storage_manager.dart';
 import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';
 import 'package:find_scan_return_app/data/network/api_service.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
@@ -14,6 +17,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   final SharedPreferencesManager sharedPreferencesManager;
   final ApiService apiService = ApiService();
+  final SecuredStorageManager securedStorageManager = SecuredStorageManager();
   AuthenticationRepositoryImpl(this.networkInfo, this.sharedPreferencesManager);
 
   @override
@@ -30,6 +34,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         if (result!.accessToken != null) {
           sharedPreferencesManager.putBool(
               SharedPreferencesManager.keyIsLogin, true);
+          log("----- User Id ${result.id}");
+          sharedPreferencesManager.putString(
+              SharedPreferencesManager.userId, result.id!);
+          securedStorageManager.writeAuthToken(result.accessToken!);
           return Right(result);
         } else {
           return Left(CredentialsFailure());
@@ -44,17 +52,28 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, Authentication>> signUp(
-      {String? email, String? password, String? userName}) async {
+      {String? email,
+      String? password,
+      String? userName,
+      String? phoneNumber,
+      String? qrId}) async {
     bool connection = await networkInfo.isConnected();
     if (connection) {
       try {
-        final result = await apiService.registerUser(
-            Register(email: email!, password: password!, username: userName!));
+        final result = await apiService.registerUser(Register(
+            email: email!,
+            password: password!,
+            username: userName!,
+            phoneNumber: phoneNumber!,
+            qrId: qrId!));
 
         if (result!.accessToken != null) {
-
           sharedPreferencesManager.putBool(
               SharedPreferencesManager.keyIsLogin, true);
+          log("----- User Id ${result.id}");
+          sharedPreferencesManager.putString(
+              SharedPreferencesManager.userId, result.id!);
+          securedStorageManager.writeAuthToken(result.accessToken!);
           return Right(result);
         } else {
           return Left(CredentialsFailure());
@@ -70,10 +89,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> signOut() async {
     sharedPreferencesManager.clearAll();
+    securedStorageManager.deleteSecureData();
   }
 
   @override
   Future<bool> isSignedIn() async {
+    String? token = await securedStorageManager.readAuthToken();
+    if (token != null) {
+      return true;
+    }
     return false;
   }
 }

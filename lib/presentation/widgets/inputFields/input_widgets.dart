@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class InputFields extends StatelessWidget {
   final bool isRequired;
-
+  final bool? isPhoneNumber;
   final TextEditingController inputController;
   final String? validationMsg;
   final String? hintText;
@@ -20,6 +20,7 @@ class InputFields extends StatelessWidget {
       required this.inputController,
       required this.isRequired,
       this.validationMsg,
+      this.isPhoneNumber,
       this.hintText,
       this.labelText,
       this.icon,
@@ -56,6 +57,12 @@ class InputFields extends StatelessWidget {
           borderSide: BorderSide(color: Colors.blueGrey[50]!),
           borderRadius: BorderRadius.circular(15),
         ),
+        prefix: isPhoneNumber ?? false
+            ? const Text(
+                " +61 |",
+                style: TextStyle(color: Colors.black),
+              )
+            : null,
       ),
     );
   }

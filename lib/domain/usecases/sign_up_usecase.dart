@@ -13,10 +13,11 @@ class SignUpUsecase implements UseCase<Authentication, Params> {
   @override
   Future<Either<Failure, Authentication>> call(Params params) async {
     return await repository.signUp(
-      email: params.email,
-      password: params.password,
-      userName: params.name,
-    );
+        email: params.email,
+        password: params.password,
+        userName: params.name,
+        phoneNumber: params.phoneNumber,
+        qrId: params.qrId);
   }
 }
 
@@ -24,13 +25,16 @@ class Params extends Equatable {
   final String email;
   final String password;
   final String name;
+  final String phoneNumber;
+  final String qrId;
 
-  const Params({
-    required this.email,
-    required this.password,
-    required this.name,
-  });
+  const Params(
+      {required this.email,
+      required this.password,
+      required this.name,
+      required this.phoneNumber,
+      required this.qrId});
 
   @override
-  List<Object> get props => [email, password, name];
+  List<Object> get props => [email, password, name, phoneNumber, qrId];
 }

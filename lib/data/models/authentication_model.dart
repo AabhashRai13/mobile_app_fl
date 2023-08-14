@@ -1,4 +1,3 @@
-
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
 
 class AuthenticationModel extends Authentication {
@@ -13,6 +12,7 @@ class AuthenticationModel extends Authentication {
       String? createdAt,
       String? updatedAt,
       String? accessToken,
+      String? phoneNumber,
       int? v})
       : super(
             updatedAt: updatedAt,
@@ -25,7 +25,8 @@ class AuthenticationModel extends Authentication {
             createdAt: createdAt,
             v: v,
             id: id,
-            accessToken: accessToken);
+            accessToken: accessToken,
+            phoneNumber: phoneNumber);
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       AuthenticationModel(
         username: json["username"],
@@ -38,6 +39,7 @@ class AuthenticationModel extends Authentication {
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
         accessToken: json["accessToken"],
+        phoneNumber: json["phoneNumber"],
         v: json["__v"],
       );
 

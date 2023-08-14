@@ -81,8 +81,10 @@ class AppStrings {
   static const String confirmPassword = "Confirm Password";
   static const String reenterYourPassword = "Re-enter your password";
   static const String loginSuccess = "Login Success";
-    static const String qrIdScanError = "There was some error scanning your QrCode please try again.";
-      static const String qrIdNotValid = "Your Qr Id not valid, please try another card.";
+  static const String qrIdScanError =
+      "There was some error scanning your QrCode please try again.";
+  static const String qrIdNotValid =
+      "Your Qr Id not valid, please try another card.";
 
   static const String enterName = "Enter your Name";
   static const String enterLastName = "Enter your Last Name";
@@ -98,16 +100,14 @@ class AppStrings {
       "Your QrCode is being verified, this may take a while.";
 
   static const String edit = "Edit";
+  static const String editProfile = "Edit Profile";
   static const String delete = "Delete";
   static const String save = "Save";
-  static const String downloadQrCodes = "Download QR Codes";
-  static const String createQr = "Create Qr";
-  static const String createQrByButton = "Create Qr Using the Big Button";
-  static const String enterTheNumberOfQr =
-      "Please enter the number of QR you want to create.";
 
   static const String somethingWentWrong = "Something Went Wrong";
-  static const String batchNumber = "Batch number";
-  static const String dateGenerated = "Generated Date";
+
   static const String scanQr = "Scan Qr";
+  static const String profile = "User profile";
+  static const String memberSince = "Member since: ";
+  static const String deleteUser = "Delete User";
 }

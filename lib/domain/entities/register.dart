@@ -14,22 +14,28 @@ class Register {
   final String username;
   final String email;
   final String password;
+  final String phoneNumber;
+  final String qrId;
 
-  Register({
-    required this.username,
-    required this.email,
-    required this.password,
-  });
+  Register(
+      {required this.username,
+      required this.email,
+      required this.password,
+      required this.phoneNumber,
+      required this.qrId});
 
   factory Register.fromJson(Map<String, dynamic> json) => Register(
-        username: json["username"],
-        email: json["email"],
-        password: json["password"],
-      );
+      username: json["username"],
+      email: json["email"],
+      password: json["password"],
+      phoneNumber: json["phoneNumber"],
+      qrId: json["qrId"]);
 
   Map<String, dynamic> toJson() => {
         "username": username,
         "email": email,
         "password": password,
+        "phoneNumber": phoneNumber,
+        "qrId": qrId
       };
 }

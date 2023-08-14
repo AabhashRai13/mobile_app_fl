@@ -1,12 +1,12 @@
 import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/presentation/authentication/register%20screens/register_bloc/sign_up_bloc.dart';
+import 'package:find_scan_return_app/presentation/qrcode/qrService/qr_service.dart';
 import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/strings_manager.dart';
 import 'package:find_scan_return_app/presentation/widgets/buttons/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../resources/size_config.dart';
 import '../../widgets/inputFields/email_form_field.dart';
 import '../../widgets/inputFields/input_widgets.dart';
@@ -20,13 +20,13 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  final QrService qrService = sl<QrService>();
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
-  bool googleLoading = false;
-  bool microsoftLoading = false;
+  final TextEditingController phoneController = TextEditingController();
   @override
   void dispose() {
     _emailEditingController.clear();
@@ -63,6 +63,8 @@ class _RegisterFormState extends State<RegisterForm> {
         },
         builder: (context, state) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               EmailFormField(
                 emailController: _emailEditingController,
@@ -77,8 +79,18 @@ class _RegisterFormState extends State<RegisterForm> {
                 isRequired: true,
                 hintText: AppStrings.enterName,
                 labelText: AppStrings.nameLabel,
+                inputType: TextInputType.name,
               ),
-              SizedBox(height: getProportionateScreenHeight(20)),
+              SizedBox(height: getProportionateScreenHeight(15)),
+              InputFields(
+                inputController: phoneController,
+                isRequired: true,
+                hintText: AppStrings.enterPhoneNumber,
+                labelText: AppStrings.phone,
+                isPhoneNumber: true,
+                inputType: TextInputType.phone,
+              ),
+              SizedBox(height: getProportionateScreenHeight(15)),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -98,14 +110,15 @@ class _RegisterFormState extends State<RegisterForm> {
                       signUpBloc.add(SignUp(
                           email: _emailEditingController.text.trim(),
                           password: _passwordEditingController.text.trim(),
-                          name: nameController.text.trim()));
+                          name: nameController.text.trim(),
+                          phoneNumber: phoneController.text.trim(),
+                          qrId: qrService.qrCode.qrId));
                     }
                   },
                   loading: loading,
                   text: AppStrings.signUp,
                 ),
               ),
-              const SizedBox(height: 40),
             ],
           );
         },

@@ -4,7 +4,7 @@ class SharedPreferencesManager {
   static late SharedPreferencesManager _instance;
   static late SharedPreferences _sharedPreferences;
   static const String keyIsLogin = 'isLogin';
-  static const String keyID = 'userID';
+  static const String userId = 'userID';
   static const String keyUsername = 'username';
   static const String keyPhoneNumber = 'phonenumber';
 

@@ -36,7 +36,7 @@ class DefaultButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        onPressed: press as void Function()?,
+        onPressed: loading ? null : press as void Function()?,
         child: loading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.white),
