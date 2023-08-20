@@ -11,6 +11,7 @@ class Authentication {
   final String? updatedAt;
   final int? v;
   final String? accessToken;
+  final String? imageUrl;
 
   Authentication(
       {this.username,
@@ -24,7 +25,8 @@ class Authentication {
       this.updatedAt,
       this.v,
       this.accessToken,
-      this.phoneNumber});
+      this.phoneNumber,
+      this.imageUrl});
   Map<String, dynamic> toJson() => {
         "username": username,
         "email": email,

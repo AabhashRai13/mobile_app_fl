@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_scan_return_app/app/error/failures.dart';
+import 'package:find_scan_return_app/app/params/image_upload_params.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
 import 'package:find_scan_return_app/domain/usecases/get_user_usecase.dart';
 import 'package:find_scan_return_app/domain/usecases/update_user_usecase.dart';
@@ -34,7 +35,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   updateUser(UpdateUserEvent event, Emitter<UserState> emit) async {
     emit(Loading());
-    final result = await updateUserUsecase.call(UserParams(user: event.user));
+    final result = await updateUserUsecase.call(UserParams(
+        user: event.user, imageUploadParams: event.imageUploadParams));
 
     result.fold((l) {
       if (l is ServerFailure) {
@@ -43,7 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(const Error(message: AppStrings.credentialsFailure));
       }
     }, (r) {
-      emit(UserLoaded(user: r));
+      emit(UserUpdated(user: r));
     });
   }
 }

@@ -13,6 +13,7 @@ class AuthenticationModel extends Authentication {
       String? updatedAt,
       String? accessToken,
       String? phoneNumber,
+      String? imageUrl,
       int? v})
       : super(
             updatedAt: updatedAt,
@@ -26,7 +27,8 @@ class AuthenticationModel extends Authentication {
             v: v,
             id: id,
             accessToken: accessToken,
-            phoneNumber: phoneNumber);
+            phoneNumber: phoneNumber,
+            imageUrl: imageUrl);
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       AuthenticationModel(
         username: json["username"],
@@ -40,6 +42,7 @@ class AuthenticationModel extends Authentication {
         updatedAt: json["updatedAt"],
         accessToken: json["accessToken"],
         phoneNumber: json["phoneNumber"],
+        imageUrl: json["imageUrl"],
         v: json["__v"],
       );
 

@@ -1,6 +1,4 @@
-import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
-import 'package:find_scan_return_app/domain/usecases/is_signed_in_usecase.dart';
 import 'package:find_scan_return_app/presentation/authentication/Login%20screens/login_body.dart';
 import 'package:find_scan_return_app/presentation/authentication/register%20screens/register_body.dart';
 import 'package:find_scan_return_app/presentation/authentication/screens/authentication_mobile.dart';
@@ -27,30 +25,36 @@ class AppRouter {
         builder: (BuildContext context, state) => const Splash(),
       ),
       GoRoute(
-        path: Routes.initialScreenRoute,
-        name: Routes.initialScreenRoute,
-        builder: (BuildContext context, state) => const LoginPageMobile(),
-      ),
-      GoRoute(
-        path: Routes.signIn,
-        name: Routes.signIn,
-        builder: (BuildContext context, state) => const LoginBody(),
-      ),
-      GoRoute(
-        path: Routes.signUp,
-        name: Routes.signUp,
-        builder: (BuildContext context, state) => const RegisterBody(),
-      ),
-      GoRoute(
-        path: Routes.qrScanner,
-        name: Routes.qrScanner,
-        builder: (BuildContext context, state) => const QRCodeScanerView(),
-      ),
-      GoRoute(
-        path: Routes.qrCodeVerificationScreen,
-        name: Routes.qrCodeVerificationScreen,
-        builder: (BuildContext context, state) => const QrCodeVerification(),
-      ),
+          path: Routes.initialScreenRoute,
+          name: Routes.initialScreenRoute,
+          builder: (BuildContext context, state) => const LoginPageMobile(),
+          routes: [
+            GoRoute(
+              path: Routes.signIn,
+              name: Routes.signIn,
+              builder: (BuildContext context, state) => const LoginBody(),
+            ),
+            GoRoute(
+                path: Routes.qrScanner,
+                name: Routes.qrScanner,
+                builder: (BuildContext context, state) =>
+                    const QRCodeScanerView(),
+                routes: [
+                  GoRoute(
+                      path: Routes.qrCodeVerificationScreen,
+                      name: Routes.qrCodeVerificationScreen,
+                      builder: (BuildContext context, state) =>
+                          const QrCodeVerification(),
+                      routes: [
+                        GoRoute(
+                          path: Routes.signUp,
+                          name: Routes.signUp,
+                          builder: (BuildContext context, state) =>
+                              const RegisterBody(),
+                        ),
+                      ]),
+                ]),
+          ]),
       GoRoute(
           path: Routes.home,
           name: Routes.home,
@@ -68,39 +72,10 @@ class AppRouter {
           ]),
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
-    redirect: (context, state) {
-      return redirect(context, state);
-    },
+    // redirect: (context, state) {
+    //   return redirect(context, state);
+    // },
   );
-
-  static Future<String?> redirect(BuildContext context, state) async {
-    final IsSignedInUsecase isSignedInUsecase = sl<IsSignedInUsecase>();
-    final bool loggedIn = await isSignedInUsecase.call();
-    final bool initialScreen =
-        state.matchedLocation == Routes.initialScreenRoute;
-    final bool loginForm = state.matchedLocation == Routes.signIn;
-    final bool siginUpForm = state.matchedLocation == Routes.signUp;
-    final bool qrScannerVerification =
-        state.matchedLocation == Routes.qrCodeVerificationScreen;
-    final bool qrScanner = state.matchedLocation == Routes.qrScanner;
-    if (!loggedIn &&
-        !initialScreen &&
-        !qrScanner &&
-        !qrScannerVerification &&
-        !loginForm &&
-        !siginUpForm) {
-      return Routes.initialScreenRoute;
-    }
-
-    // if the user is logged in but still on the login page, send them to
-    // the home page
-    if (loggedIn && initialScreen) {
-      return Routes.home;
-    }
-
-    // no need to redirect at all
-    return null;
-  }
 
   static Future<String?> homeRedirect(BuildContext context, state) async {
     return null;

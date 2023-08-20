@@ -11,5 +11,6 @@ class GetUserEvent extends UserEvent {}
 
 class UpdateUserEvent extends UserEvent {
   final Authentication user;
-  const UpdateUserEvent({required this.user});
+  final ImageUploadParams imageUploadParams;
+  const UpdateUserEvent({required this.user, required this.imageUploadParams});
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/app/preferences/secured_storage_manager.dart';
@@ -10,11 +11,16 @@ import 'package:go_router/go_router.dart';
 class SplashScreenServices {
   final SharedPreferencesManager sharedPreferencesManager =
       sl<SharedPreferencesManager>();
-  final SecuredStorageManager securedStorageManager =
-      SecuredStorageManager();
+  final SecuredStorageManager securedStorageManager = SecuredStorageManager();
+  String? token;
+
+  setToken() async {
+    token = await securedStorageManager.readAuthToken();
+  }
 
   firstTimeCheck() async {
     bool? isFirstTime = await sharedPreferencesManager.isfirstTime();
+    log("is first time $isFirstTime");
     if (isFirstTime ?? true) {
       await securedStorageManager.deleteSecureData();
 
@@ -26,12 +32,20 @@ class SplashScreenServices {
 
   /// function to start timer for splash screen to display
   startDelay(BuildContext context) {
-    _timer = Timer(const Duration(seconds: 3), _goNext(context));
+    _timer = Timer(const Duration(milliseconds: 10), () {
+      _goNext(context);
+    });
   }
 
   /// function to check if token is empty and navigate accordingly
   _goNext(BuildContext context) {
-    context.go(Routes.initialScreenRoute);
+    if (token == null) {
+      log("is null");
+      if (context.mounted) context.goNamed(Routes.initialScreenRoute);
+    } else {
+      log("is not null");
+      if (context.mounted) context.goNamed(Routes.home);
+    }
   }
 
   disposeTimer() {

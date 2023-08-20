@@ -14,7 +14,16 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     splashService.firstTimeCheck();
-    splashService.startDelay(context);
+    Future.delayed(const Duration(seconds: 3), () {
+      splashService.setToken();
+      splashService.startDelay(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    splashService.disposeTimer();
+    super.dispose();
   }
 
   @override

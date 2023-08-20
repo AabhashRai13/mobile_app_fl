@@ -17,7 +17,7 @@ class SharedPreferencesManager {
   }
 
   Future<bool> setfirstTime() {
-    return _sharedPreferences.setBool(firstTime, true);
+    return _sharedPreferences.setBool(firstTime, false);
   }
 
   Future<bool?> isfirstTime() async {

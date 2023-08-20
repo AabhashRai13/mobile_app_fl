@@ -11,6 +11,8 @@ import 'package:find_scan_return_app/presentation/qrVerification/cubit/qr_id_ver
 import 'package:find_scan_return_app/presentation/qrcode/bloc/qr_bloc.dart';
 import 'package:find_scan_return_app/presentation/qrcode/qrService/qr_service.dart';
 import 'package:find_scan_return_app/presentation/userDetails/bloc/user_bloc.dart';
+import 'package:find_scan_return_app/presentation/userDetails/cubit/image_cubit.dart';
+import 'package:find_scan_return_app/presentation/userDetails/service/image_selector.dart';
 import 'package:get_it/get_it.dart';
 import '../data/repositories/authentication_repositories_impl.dart';
 import '../domain/repositories/authentication_repository.dart';
@@ -63,6 +65,7 @@ Future<void> initAppModule() async {
 
   /// services
   sl.registerLazySingleton<QrService>(() => QrService());
+  sl.registerLazySingleton<ImageSelector>(() => ImageSelector());
 
   /// blocs and cubits
   sl.registerFactory<ObscureCubit>(() => ObscureCubit());
@@ -72,4 +75,5 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<QrBloc>(() => QrBloc());
   sl.registerFactory<QrIdVerificationCubit>(() => QrIdVerificationCubit(sl()));
   sl.registerLazySingleton<UserBloc>(() => UserBloc(sl(), sl()));
+  sl.registerLazySingleton<ImageCubit>(() => ImageCubit());
 }

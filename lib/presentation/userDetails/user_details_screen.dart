@@ -1,4 +1,4 @@
-import 'package:find_scan_return_app/presentation/resources/assets_manager.dart';
+import 'package:find_scan_return_app/domain/usecases/sign_out_usecase.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
@@ -21,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final UserBloc userBloc = sl<UserBloc>();
+  final SignOutUsecase signOutUsecase = sl<SignOutUsecase>();
   @override
   void initState() {
     super.initState();
@@ -63,9 +64,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: getProportionateScreenWidth(150),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: const Image(
-                                  image: AssetImage(
-                                      ImageAssets.findScanReturnQr))),
+                              child: Image(
+                                  image: NetworkImage(state.user.imageUrl!))),
                         ),
                       ],
                     ),
@@ -116,7 +116,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icons.logout,
                         textColor: Colors.red,
                         endIcon: false,
-                        onPress: () {}),
+                        onPress: () {
+                          signOutUsecase.call();
+                          context.goNamed(Routes.initialScreenRoute);
+                        }),
                   ],
                 ),
               ),

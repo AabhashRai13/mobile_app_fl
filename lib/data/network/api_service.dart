@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:find_scan_return_app/app/app_constants.dart';
+import 'package:find_scan_return_app/app/params/image_upload_params.dart';
 import 'package:find_scan_return_app/data/models/authentication_model.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
 import 'package:find_scan_return_app/domain/entities/register.dart';
@@ -85,13 +87,30 @@ class ApiService {
   }
 
   Future<Authentication?> updateUser(
-      String accessToken, String userId, Authentication user) async {
+    String accessToken,
+    String userId,
+    Authentication user,
+    ImageUploadParams imageUploadParams,
+  ) async {
+    log("---image file----");
+    log("${imageUploadParams.imageFile}");
     try {
+      final formData = FormData.fromMap(
+        {
+          "image": await MultipartFile.fromFile(
+            imageUploadParams.imageFile.path,
+            filename: imageUploadParams.image,
+          ),
+          "jsonData": MultipartFile.fromString(
+            jsonEncode(user.toJson()),
+          ),
+        },
+      );
       final response = await dio.put('${AppConstants.devBaseURL}/users/$userId',
           options: Options(headers: {
             'token': 'Bearer $accessToken',
           }),
-          data: user.toJson());
+          data: formData);
 
       if (response.statusCode == 200) {
         Authentication users = AuthenticationModel.fromJson(response.data);

@@ -36,6 +36,7 @@ class HomeState extends State<Home> {
   ];
 
   int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

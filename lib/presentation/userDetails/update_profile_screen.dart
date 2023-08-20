@@ -1,11 +1,13 @@
 import 'package:find_scan_return_app/app/constants/regx.dart';
 import 'package:find_scan_return_app/app/di.dart';
+import 'package:find_scan_return_app/app/params/image_upload_params.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
-import 'package:find_scan_return_app/presentation/resources/assets_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
 import 'package:find_scan_return_app/presentation/resources/strings_manager.dart';
 import 'package:find_scan_return_app/presentation/userDetails/bloc/user_bloc.dart';
+import 'package:find_scan_return_app/presentation/userDetails/cubit/image_cubit.dart';
+import 'package:find_scan_return_app/presentation/userDetails/service/image_selector.dart';
 import 'package:find_scan_return_app/presentation/userDetails/service/user_service.dart';
 import 'package:find_scan_return_app/presentation/widgets/buttons/default_button.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,9 @@ class UpdateProfileScreen extends StatefulWidget {
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final UserService userService = UserService();
   final UserBloc _userBloc = sl<UserBloc>();
+  final ImageCubit imageCubit = sl<ImageCubit>();
+
+  final ImageSelector _imageSelector = sl<ImageSelector>();
   final formKey = GlobalKey<FormState>();
   bool loading = false;
   @override
@@ -35,6 +40,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   @override
+  void dispose() {
+    _imageSelector.imageFile = null;
+    imageCubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -43,14 +55,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       body: BlocConsumer<UserBloc, UserState>(
         bloc: _userBloc,
         listener: (context, state) {
-          if (state is UserLoaded) {
+          if (state is UserUpdated) {
             loading = false;
-          } else if (state is Loading) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text(AppStrings.userUpdated)),
             );
-            loading = true;
             _userBloc.add(GetUserEvent());
+          } else if (state is Loading) {
+            loading = true;
           } else if (state is Error) {
             loading = false;
             ScaffoldMessenger.of(context).showSnackBar(
@@ -69,30 +81,52 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 children: [
                   // -- IMAGE with ICON
                   Center(
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          width: 120,
-                          height: 120,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: const Image(
-                                  image: AssetImage(ImageAssets.logo))),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: ColorManager.primary),
-                            child: const Icon(Icons.camera,
-                                color: Colors.black, size: 20),
+                    child: InkWell(
+                      onTap: () => _imageSelector.getImage(),
+                      child: Stack(
+                        children: [
+                          BlocBuilder<ImageCubit, ImageState>(
+                            bloc: imageCubit,
+                            builder: (context, state) {
+                              if (state is ImageUpdated) {
+                                return SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Image.file(
+                                          state.imageFile!,
+                                          fit: BoxFit.cover,
+                                        )));
+                              }
+                              return SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image(
+                                        image: NetworkImage(widget
+                                                .users!.imageUrl ??
+                                            "https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg"))),
+                              );
+                            },
                           ),
-                        ),
-                      ],
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: ColorManager.primary),
+                              child: const Icon(Icons.camera,
+                                  color: Colors.black, size: 20),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 50),
@@ -158,7 +192,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     userService.usernameEditingController.text,
                                 phoneNumber:
                                     userService.phoneEditingController.text,
-                                updatedAt: DateTime.now().toString())));
+                                updatedAt: DateTime.now().toString()),
+                            imageUploadParams: ImageUploadParams(
+                                image: _imageSelector.imageName!,
+                                imageFile: _imageSelector.imageFile!)));
                       }
                     },
                   ),

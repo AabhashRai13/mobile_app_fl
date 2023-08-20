@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:find_scan_return_app/app/error/exceptions.dart';
 import 'package:find_scan_return_app/app/error/failures.dart';
 import 'package:find_scan_return_app/app/network/network_info.dart';
+import 'package:find_scan_return_app/app/params/image_upload_params.dart';
 import 'package:find_scan_return_app/app/preferences/secured_storage_manager.dart';
 import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';
 import 'package:find_scan_return_app/data/network/api_service.dart';
@@ -45,13 +46,13 @@ class UserRepositoryImplementation extends UserRepository {
 
   @override
   Future<Either<Failure, Authentication>> updateUser(
-      Authentication user) async {
+      Authentication user,ImageUploadParams imageUploadParams ) async {
     bool connection = await networkInfo.isConnected();
     if (connection) {
       try {
         String? token = await securedStorageManager.readAuthToken();
         String? userId = sharedPreferencesManager.getString("userID");
-        final result = await apiService.updateUser(token!, userId!, user);
+        final result = await apiService.updateUser(token!, userId!, user,imageUploadParams);
 
         if (result != null) {
           return Right(result);

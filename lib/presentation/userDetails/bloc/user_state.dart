@@ -17,6 +17,14 @@ class UserLoaded extends UserState {
   List<Object> get props => [user];
 }
 
+class UserUpdated extends UserState {
+  final Authentication user;
+  const UserUpdated({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
 class Loading extends UserState {}
 
 class Error extends UserState {
