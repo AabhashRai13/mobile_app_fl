@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "346151105515",
+    "project_id": "findscanreturn",
+    "storage_bucket": "findscanreturn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346151105515:android:f15977b720ac68e13a9fae",
+        "android_client_info": {
+          "package_name": "com.example.find_scan_return_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346151105515-v1gnd6dkmvb6valiornavu580u092su4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.find_scan_return_app",
+            "certificate_hash": "5917011d55a1ca5a03ea93cbfa301e8bda54bd76"
+          }
+        },
+        {
+          "client_id": "346151105515-b1rc0ru87ut29lf18iu2flq75mp4i92q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADkuJWF9F7MkBt7jZvcCEyBlXDUigmBAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346151105515-b1rc0ru87ut29lf18iu2flq75mp4i92q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

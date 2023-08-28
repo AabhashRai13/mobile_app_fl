@@ -4,7 +4,9 @@ import 'package:find_scan_return_app/presentation/userDetails/user_details_scree
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final String? pageIndex;
+  final String? data;
+  const Home({Key? key, this.pageIndex, this.data}) : super(key: key);
 
   @override
   HomeState createState() => HomeState();
@@ -36,6 +38,15 @@ class HomeState extends State<Home> {
   ];
 
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.pageIndex != null) {
+      setState(() {
+        _selectedIndex = int.parse(widget.pageIndex!);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -48,7 +48,8 @@ class _LoginFormState extends State<LoginForm> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text(AppStrings.loginSuccess)),
             );
-            context.goNamed(Routes.home);
+            context.goNamed(Routes.home,
+                pathParameters: {'id1': 0.toString(), 'id2': " "});
           } else if (state is Error) {
             loading = false;
 

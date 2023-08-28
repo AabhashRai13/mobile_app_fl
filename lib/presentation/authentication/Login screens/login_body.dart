@@ -15,7 +15,7 @@ class LoginBody extends StatelessWidget {
           color: Colors.black, //change your color here
         ),
       ),
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.8,

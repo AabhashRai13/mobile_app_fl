@@ -14,11 +14,13 @@ class SplashScreenServices {
   final SecuredStorageManager securedStorageManager = SecuredStorageManager();
   String? token;
 
-  setToken() async {
+  setToken(BuildContext context) async {
     token = await securedStorageManager.readAuthToken();
+
+    if (context.mounted) startDelay(context);
   }
 
-  firstTimeCheck() async {
+  firstTimeCheck(BuildContext context) async {
     bool? isFirstTime = await sharedPreferencesManager.isfirstTime();
     log("is first time $isFirstTime");
     if (isFirstTime ?? true) {
@@ -26,6 +28,7 @@ class SplashScreenServices {
 
       sharedPreferencesManager.setfirstTime();
     }
+    if (context.mounted) setToken(context);
   }
 
   Timer? _timer;
@@ -44,11 +47,14 @@ class SplashScreenServices {
       if (context.mounted) context.goNamed(Routes.initialScreenRoute);
     } else {
       log("is not null");
-      if (context.mounted) context.goNamed(Routes.home);
+      if (context.mounted) {
+        context.goNamed(Routes.home, pathParameters: {'id1': "0", 'id2': " "});
+      }
     }
   }
 
   disposeTimer() {
+    if (_timer == null) return;
     _timer!.cancel();
   }
 }

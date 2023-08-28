@@ -13,11 +13,8 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    splashService.firstTimeCheck();
-    Future.delayed(const Duration(seconds: 3), () {
-      splashService.setToken();
-      splashService.startDelay(context);
-    });
+
+    splashService.firstTimeCheck(context);
   }
 
   @override

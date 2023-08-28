@@ -58,7 +58,10 @@ class AppRouter {
       GoRoute(
           path: Routes.home,
           name: Routes.home,
-          builder: (BuildContext context, state) => const Home(),
+          builder: (BuildContext context, state) => Home(
+                pageIndex: state.pathParameters['id1'],
+                data: state.pathParameters['id2'],
+              ),
           routes: [
             GoRoute(
                 path: Routes.updateUser,
