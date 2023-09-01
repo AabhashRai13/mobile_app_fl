@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -24,9 +25,18 @@ class FirebaseNotification {
       importance: Importance.defaultImportance);
 
   final _localNotifications = FlutterLocalNotificationsPlugin();
+  final SharedPreferencesManager _sharedPreferencesManager =
+      SharedPreferencesManager();
 
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
+    //// different isLoggedIn function is used here because secured storge can't be used here
+    /// as secure storage saves data even if app is uninstalled
+    bool? isLoggedIn =
+        _sharedPreferencesManager.getBool(SharedPreferencesManager.keyIsLogin);
+    if (isLoggedIn == null || !isLoggedIn) {
+      return;
+    }
     final fCMToken = await _firebaseMessaging.getToken();
     log('FCM Token: $fCMToken');
     initPushNotification();

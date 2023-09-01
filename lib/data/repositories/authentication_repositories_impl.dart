@@ -98,7 +98,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<bool> isSignedIn() async {
     String? token = await securedStorageManager.readAuthToken();
-    log("token $token");
     if (token != null) {
       return true;
     }

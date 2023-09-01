@@ -27,7 +27,7 @@ class SharedPreferencesManager {
   Future<bool> putBool(String key, bool value) =>
       _sharedPreferences.setBool(key, value);
 
-  bool getBool(String key) => _sharedPreferences.getBool(key)!;
+  bool? getBool(String key) => _sharedPreferences.getBool(key)!;
 
   Future<bool> putDouble(String key, double value) =>
       _sharedPreferences.setDouble(key, value);
