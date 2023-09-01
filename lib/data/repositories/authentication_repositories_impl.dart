@@ -6,6 +6,7 @@ import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.
 import 'package:find_scan_return_app/data/network/api_service.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
 import 'package:find_scan_return_app/domain/entities/register.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../app/error/exceptions.dart';
 import '../../app/error/failures.dart';
 import '../../app/network/network_info.dart';
@@ -14,6 +15,7 @@ import '../../domain/repositories/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final NetworkInfo networkInfo;
+  final _firebaseMessaging = FirebaseMessaging.instance;
 
   final SharedPreferencesManager sharedPreferencesManager;
   final ApiService apiService = ApiService();
@@ -25,11 +27,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       {String? userName, String? password}) async {
     bool connection = await networkInfo.isConnected();
     if (connection) {
+      final fCMToken = await _firebaseMessaging.getToken();
       try {
         final result = await apiService.signIn(SignIn(
-          username: userName!,
-          password: password!,
-        ));
+            username: userName!, password: password!, fcmToken: fCMToken));
 
         if (result != null) {
           sharedPreferencesManager.putBool(
@@ -59,13 +60,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       String? qrId}) async {
     bool connection = await networkInfo.isConnected();
     if (connection) {
+      final fCMToken = await _firebaseMessaging.getToken();
       try {
         final result = await apiService.registerUser(Register(
             email: email!,
             password: password!,
             username: userName!,
             phoneNumber: phoneNumber!,
-            qrId: qrId!));
+            qrId: qrId!,
+            fcmToken: fCMToken!));
 
         if (result!.accessToken != null) {
           sharedPreferencesManager.putBool(

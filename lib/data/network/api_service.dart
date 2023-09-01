@@ -15,11 +15,11 @@ class ApiService {
     try {
       final response = await dio.post('${AppConstants.devBaseURL}/auth/login',
           data: signIn.toJson());
-
+      log("Fcm Token before login ${signIn.fcmToken}");
       if (response.statusCode == 200) {
         Authentication authentication =
             AuthenticationModel.fromJson(response.data);
-
+        log("Fcm token ${authentication.fcmTokens}");
         return authentication;
       }
       return null;

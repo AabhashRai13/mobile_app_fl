@@ -14,7 +14,8 @@ class AuthenticationModel extends Authentication {
       String? accessToken,
       String? phoneNumber,
       String? imageUrl,
-      int? v})
+      int? v,
+      List<String>? fcmTokens})
       : super(
             updatedAt: updatedAt,
             email: email,
@@ -28,7 +29,8 @@ class AuthenticationModel extends Authentication {
             id: id,
             accessToken: accessToken,
             phoneNumber: phoneNumber,
-            imageUrl: imageUrl);
+            imageUrl: imageUrl,
+            fcmTokens: fcmTokens);
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       AuthenticationModel(
         username: json["username"],
@@ -44,6 +46,7 @@ class AuthenticationModel extends Authentication {
         phoneNumber: json["phoneNumber"],
         imageUrl: json["imageUrl"],
         v: json["__v"],
+        fcmTokens: List<String>.from(json["fcmTokens"].map((x) => x)),
       );
 
   @override
@@ -58,6 +61,7 @@ class AuthenticationModel extends Authentication {
         "createdAt": createdAt,
         "updatedAt": updatedAt,
         "__v": v,
-        "accessToken": accessToken
+        "accessToken": accessToken,
+        "fcmToken": fcmTokens
       };
 }

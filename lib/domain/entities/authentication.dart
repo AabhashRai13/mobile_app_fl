@@ -12,6 +12,7 @@ class Authentication {
   final int? v;
   final String? accessToken;
   final String? imageUrl;
+  final List<String>? fcmTokens;
 
   Authentication(
       {this.username,
@@ -26,13 +27,15 @@ class Authentication {
       this.v,
       this.accessToken,
       this.phoneNumber,
-      this.imageUrl});
+      this.imageUrl,
+      this.fcmTokens});
   Map<String, dynamic> toJson() => {
         "username": username,
         "email": email,
         "isAdmin": isAdmin,
         "isPrinter": isPrinter,
         "updatedAt": updatedAt,
-        "phoneNumber": phoneNumber
+        "phoneNumber": phoneNumber,
+        "fcmToken": fcmTokens
       };
 }
