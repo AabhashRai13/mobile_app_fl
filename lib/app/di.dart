@@ -1,12 +1,16 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';
+import 'package:find_scan_return_app/data/repositories/notification_repositories_impl.dart';
 import 'package:find_scan_return_app/data/repositories/qrcode_repositories_impl.dart';
 import 'package:find_scan_return_app/data/repositories/user_repository_impl.dart';
+import 'package:find_scan_return_app/domain/repositories/notification_repository.dart';
 import 'package:find_scan_return_app/domain/repositories/qrcode_repository.dart';
 import 'package:find_scan_return_app/domain/repositories/user_repository.dart';
+import 'package:find_scan_return_app/domain/usecases/get_user_notification.dart';
 import 'package:find_scan_return_app/domain/usecases/get_user_usecase.dart';
 import 'package:find_scan_return_app/domain/usecases/is_qrid_valid_usecase.dart';
 import 'package:find_scan_return_app/domain/usecases/update_user_usecase.dart';
+import 'package:find_scan_return_app/presentation/notification/bloc/notification_bloc.dart';
 import 'package:find_scan_return_app/presentation/qrVerification/cubit/qr_id_verification_cubit.dart';
 import 'package:find_scan_return_app/presentation/qrcode/bloc/qr_bloc.dart';
 import 'package:find_scan_return_app/presentation/qrcode/qrService/qr_service.dart';
@@ -52,6 +56,8 @@ Future<void> initAppModule() async {
       ));
   sl.registerLazySingleton<UserRepository>(
       () => UserRepositoryImplementation(sl(), sl()));
+  sl.registerLazySingleton<NotificationRepository>(
+      () => NotificationRepositoryImpl(sl(), sl()));
 
   // UseCases
   sl.registerLazySingleton<SignUpUsecase>(() => SignUpUsecase(sl()));
@@ -62,6 +68,8 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<IsQrIdValidUsecase>(() => IsQrIdValidUsecase(sl()));
   sl.registerLazySingleton<GetUserUsecase>(() => GetUserUsecase(sl()));
   sl.registerLazySingleton<UpdateUserUsecase>(() => UpdateUserUsecase(sl()));
+  sl.registerLazySingleton<GetNotificationUseCase>(
+      () => GetNotificationUseCase(sl()));
 
   /// services
   sl.registerLazySingleton<QrService>(() => QrService());
@@ -76,4 +84,5 @@ Future<void> initAppModule() async {
   sl.registerFactory<QrIdVerificationCubit>(() => QrIdVerificationCubit(sl()));
   sl.registerLazySingleton<UserBloc>(() => UserBloc(sl(), sl()));
   sl.registerLazySingleton<ImageCubit>(() => ImageCubit());
+  sl.registerLazySingleton<NotificationBloc>(() => NotificationBloc(sl()));
 }

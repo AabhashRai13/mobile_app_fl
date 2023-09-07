@@ -1,3 +1,4 @@
+import 'package:find_scan_return_app/presentation/notification/screens/notification_screens.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
 import 'package:find_scan_return_app/presentation/userDetails/user_details_screen.dart';
@@ -18,14 +19,7 @@ class HomeState extends State<Home> {
     const ProfileScreen(),
 
     // Content for Favorites tab
-    Container(
-      color: Colors.red.shade100,
-      alignment: Alignment.center,
-      child: const Text(
-        'Notifications',
-        style: TextStyle(fontSize: 40),
-      ),
-    ),
+    const NotificationList(),
     // Content for Settings tab
     Container(
       color: Colors.pink.shade300,

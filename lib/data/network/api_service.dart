@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:find_scan_return_app/app/app_constants.dart';
 import 'package:find_scan_return_app/app/params/image_upload_params.dart';
 import 'package:find_scan_return_app/data/models/authentication_model.dart';
+import 'package:find_scan_return_app/data/models/notification_model.dart';
 import 'package:find_scan_return_app/domain/entities/authentication.dart';
+import 'package:find_scan_return_app/domain/entities/notification.dart';
 import 'package:find_scan_return_app/domain/entities/register.dart';
 import '../../domain/entities/sign_in.dart';
 
@@ -116,6 +118,31 @@ class ApiService {
         Authentication users = AuthenticationModel.fromJson(response.data);
 
         return users;
+      }
+      return null;
+    } catch (e) {
+      log("Error $e");
+      return null;
+    }
+  }
+
+  Future<List<Notification>?> getNotification(
+      String accessToken, String userID) async {
+    log(accessToken);
+    try {
+      final response = await dio.get(
+          '${AppConstants.devBaseURL}/pushNotification/notification/$userID',
+          options: Options(headers: {
+            'token': 'Bearer $accessToken',
+          }));
+
+      if (response.statusCode == 200) {
+        List<Notification> notification = [];
+
+        response.data.forEach((e) {
+          notification.add(NotificationModel.fromJson(e));
+        });
+        return notification;
       }
       return null;
     } catch (e) {

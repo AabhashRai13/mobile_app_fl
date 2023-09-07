@@ -1,21 +1,21 @@
-import 'package:equatable/equatable.dart';
+class Notification {
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? phoneNumber;
+  final String? location;
+  final String? customMsg;
+  final String? timestamp;
+  final int? v;
 
-/// {@template notification}
-/// Model representing a Notification.
-/// {@endtemplate}
-class Notification extends Equatable {
-  /// {@macro notification}
   const Notification({
-    required this.title,
-    required this.body,
+    this.id,
+    this.name,
+    this.email,
+    this.phoneNumber,
+    this.location,
+    this.customMsg,
+    this.timestamp,
+    this.v,
   });
-
-  /// The notification title.
-  final String title;
-
-  /// The notification body.
-  final String body;
-
-  @override
-  List<Object> get props => [title, body];
 }

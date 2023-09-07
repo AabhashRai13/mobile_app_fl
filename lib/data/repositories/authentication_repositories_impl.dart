@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:find_scan_return_app/app/preferences/secured_storage_manager.dart';
 import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';

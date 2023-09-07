@@ -112,4 +112,6 @@ class AppStrings {
   static const String deleteUser = "Delete User";
   static const String updateUser = "Update User";
   static const String userUpdated = "User updated successfully";
+
+  static const String notification = "Notifications";
 }
