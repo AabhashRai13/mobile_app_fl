@@ -1,4 +1,5 @@
 import 'package:find_scan_return_app/domain/usecases/sign_out_usecase.dart';
+import 'package:find_scan_return_app/presentation/resources/assets_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/router/routes_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
@@ -26,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     userBloc.add(GetUserEvent());
+    
   }
 
   @override
@@ -47,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(state.message),
             );
           } else if (state is UserLoaded) {
+         
             return SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.fromLTRB(
@@ -65,7 +68,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
                               child: Image(
-                                  image: NetworkImage(state.user.imageUrl!))),
+                                  image: state.user.imageUrl == null
+                                      ? const AssetImage(ImageAssets.logo)
+                                          as ImageProvider
+                                      : NetworkImage(
+                                          state.user.imageUrl ?? ""))),
                         ),
                       ],
                     ),
@@ -79,7 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          context.goNamed(Routes.updateUser, extra: state.user);
+                          context.pushNamed(Routes.updateUser,
+                              extra: state.user);
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.secondary,

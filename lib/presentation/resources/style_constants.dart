@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'color_manager.dart';
 
 final headingStyle = TextStyle(
-  fontSize: getProportionateScreenWidth(18),
+  fontSize: getProportionateScreenWidth(20),
   fontWeight: FontWeight.bold,
   color: Colors.black,
   height: 1.5,

@@ -48,7 +48,7 @@ class SplashScreenServices {
     } else {
       log("is not null");
       if (context.mounted) {
-        context.goNamed(Routes.home, pathParameters: {'id1': "0", 'id2': " "});
+        context.goNamed(Routes.home, pathParameters: {'id1': "0",});
       }
     }
   }

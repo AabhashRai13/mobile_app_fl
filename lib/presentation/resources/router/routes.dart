@@ -60,19 +60,17 @@ class AppRouter {
           name: Routes.home,
           builder: (BuildContext context, state) => Home(
                 pageIndex: state.pathParameters['id1'],
-                data: state.pathParameters['id2'],
               ),
-          routes: [
-            GoRoute(
-                path: Routes.updateUser,
-                name: Routes.updateUser,
-                builder: (BuildContext context, state) {
-                  Authentication user = state.extra as Authentication;
-                  return UpdateProfileScreen(
-                    users: user,
-                  );
-                }),
-          ]),
+        ),
+      GoRoute(
+          path: Routes.updateUser,
+          name: Routes.updateUser,
+          builder: (BuildContext context, state) {
+            Authentication user = state.extra as Authentication;
+            return UpdateProfileScreen(
+              users: user,
+            );
+          }),
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
     // redirect: (context, state) {

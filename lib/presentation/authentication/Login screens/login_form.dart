@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
               const SnackBar(content: Text(AppStrings.loginSuccess)),
             );
             context.goNamed(Routes.home,
-                pathParameters: {'id1': 0.toString(), 'id2': " "});
+                pathParameters: {'id1': 0.toString()});
           } else if (state is Error) {
             loading = false;
 
