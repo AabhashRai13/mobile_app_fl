@@ -25,4 +25,6 @@ class ImageAssets {
   static const String picker = "$imagePath/picker.svg";
   static const String notFound = "$imagePath/not_found.svg";
   static const String findScanReturnQr = "$imagePath/Find_Scan_Return.png";
+  static const String findScanReturnSvg = "$imagePath/Find_Scan_Return.svg";
+  static const String logoSvg = "$imagePath/logo_svg.svg";
 }

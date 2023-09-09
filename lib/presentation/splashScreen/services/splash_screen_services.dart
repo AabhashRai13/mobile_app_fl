@@ -35,7 +35,7 @@ class SplashScreenServices {
 
   /// function to start timer for splash screen to display
   startDelay(BuildContext context) {
-    _timer = Timer(const Duration(milliseconds: 10), () {
+    _timer = Timer(const Duration(milliseconds: 500), () {
       _goNext(context);
     });
   }
@@ -48,7 +48,9 @@ class SplashScreenServices {
     } else {
       log("is not null");
       if (context.mounted) {
-        context.goNamed(Routes.home, pathParameters: {'id1': "0",});
+        context.goNamed(Routes.home, pathParameters: {
+          'id1': "0",
+        });
       }
     }
   }
