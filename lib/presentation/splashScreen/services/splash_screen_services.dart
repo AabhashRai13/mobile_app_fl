@@ -22,7 +22,6 @@ class SplashScreenServices {
 
   firstTimeCheck(BuildContext context) async {
     bool? isFirstTime = await sharedPreferencesManager.isfirstTime();
-    log("is first time $isFirstTime");
     if (isFirstTime ?? true) {
       await securedStorageManager.deleteSecureData();
 
