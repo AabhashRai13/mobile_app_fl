@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:find_scan_return_app/presentation/notification/screens/notification_screens.dart';
 import 'package:find_scan_return_app/presentation/resources/color_manager.dart';
 import 'package:find_scan_return_app/presentation/resources/size_config.dart';
@@ -6,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   final String? pageIndex;
-  final String? data;
-  const Home({Key? key, this.pageIndex, this.data}) : super(key: key);
+
+  const Home({Key? key, this.pageIndex}) : super(key: key);
 
   @override
   HomeState createState() => HomeState();
@@ -20,22 +22,16 @@ class HomeState extends State<Home> {
 
     // Content for Favorites tab
     const NotificationList(),
-    // Content for Settings tab
-    Container(
-      color: Colors.pink.shade300,
-      alignment: Alignment.center,
-      child: const Text(
-        'Settings',
-        style: TextStyle(fontSize: 40),
-      ),
-    )
   ];
 
   int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
+
     if (widget.pageIndex != null) {
+      log("index");
+      log(widget.pageIndex!);
       setState(() {
         _selectedIndex = int.parse(widget.pageIndex!);
       });
@@ -49,21 +45,18 @@ class HomeState extends State<Home> {
           height: getProportionateScreenHeight(50),
           color: ColorManager.primary,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.home,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
-                  },
+              IconButton(
+                icon: const Icon(
+                  Icons.home,
+                  color: Colors.white,
                 ),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
               ),
               IconButton(
                 icon: const Icon(
@@ -75,21 +68,6 @@ class HomeState extends State<Home> {
                     _selectedIndex = 1;
                   });
                 },
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(right: getProportionateScreenWidth(20)),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 2;
-                    });
-                  },
-                ),
               ),
             ],
           )),

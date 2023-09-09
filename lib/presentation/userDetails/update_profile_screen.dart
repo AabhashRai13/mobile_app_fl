@@ -33,17 +33,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   @override
   void initState() {
     super.initState();
+    imageCubit.resetImage();
     userService.initialValue(
         email: widget.users!.email,
         username: widget.users!.username,
         phone: widget.users!.phoneNumber);
-  }
-
-  @override
-  void dispose() {
-    _imageSelector.imageFile = null;
-    imageCubit.close();
-    super.dispose();
   }
 
   @override
@@ -193,9 +187,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 phoneNumber:
                                     userService.phoneEditingController.text,
                                 updatedAt: DateTime.now().toString()),
-                            imageUploadParams: ImageUploadParams(
-                                image: _imageSelector.imageName!,
-                                imageFile: _imageSelector.imageFile!)));
+                            imageUploadParams: _imageSelector.imageFile == null
+                                ? null
+                                : ImageUploadParams(
+                                    image: _imageSelector.imageName!,
+                                    imageFile: _imageSelector.imageFile!)));
                       }
                     },
                   ),

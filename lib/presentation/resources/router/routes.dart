@@ -72,9 +72,7 @@ class AppRouter {
           }),
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
-    // redirect: (context, state) {
-    //   return redirect(context, state);
-    // },
+  
   );
 
   static Future<String?> homeRedirect(BuildContext context, state) async {

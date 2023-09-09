@@ -92,27 +92,35 @@ class ApiService {
     String accessToken,
     String userId,
     Authentication user,
-    ImageUploadParams imageUploadParams,
+    ImageUploadParams? imageUploadParams,
   ) async {
     log("---image file----");
-    log("${imageUploadParams.imageFile}");
+    if (imageUploadParams != null) {
+      log("${imageUploadParams.imageFile}");
+    }
+
     try {
-      final formData = FormData.fromMap(
-        {
-          "image": await MultipartFile.fromFile(
-            imageUploadParams.imageFile.path,
-            filename: imageUploadParams.image,
-          ),
-          "jsonData": MultipartFile.fromString(
-            jsonEncode(user.toJson()),
-          ),
-        },
-      );
+      FormData? formData;
+
+      if (imageUploadParams != null) {
+        formData = FormData.fromMap(
+          {
+            "image": await MultipartFile.fromFile(
+              imageUploadParams.imageFile.path,
+              filename: imageUploadParams.image,
+            ),
+            "jsonData": MultipartFile.fromString(
+              jsonEncode(user.toJson()),
+            ),
+          },
+        );
+      }
+
       final response = await dio.put('${AppConstants.devBaseURL}/users/$userId',
           options: Options(headers: {
             'token': 'Bearer $accessToken',
           }),
-          data: formData);
+          data: formData ?? user.toJson());
 
       if (response.statusCode == 200) {
         Authentication users = AuthenticationModel.fromJson(response.data);

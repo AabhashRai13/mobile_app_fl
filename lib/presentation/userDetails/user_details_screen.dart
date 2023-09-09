@@ -27,16 +27,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     userBloc.add(GetUserEvent());
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-        AppStrings.profile,
-      )),
+        title: const Text(
+          AppStrings.profile,
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                signOutUsecase.call();
+                context.goNamed(Routes.initialScreenRoute);
+              },
+              icon: const Icon(Icons.login_outlined))
+        ],
+      ),
       body: BlocBuilder<UserBloc, UserState>(
         bloc: userBloc,
         builder: (context, state) {
@@ -49,7 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(state.message),
             );
           } else if (state is UserLoaded) {
-         
             return SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.fromLTRB(
@@ -100,18 +107,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    const Divider(),
-                    const SizedBox(height: 10),
-
-                    /// -- MENU
-                    ProfileMenuWidget(
-                        title: "Settings",
-                        icon: Icons.settings,
-                        onPress: () {}),
-                    ProfileMenuWidget(
-                        title: "Billing Details",
-                        icon: Icons.blinds_closed,
-                        onPress: () {}),
 
                     const Divider(),
                     const SizedBox(height: 10),

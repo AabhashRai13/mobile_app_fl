@@ -19,8 +19,8 @@ class UpdateUserUsecase implements UseCase<Authentication, UserParams> {
 
 class UserParams extends Equatable {
   final Authentication user;
-  final ImageUploadParams imageUploadParams;
-  const UserParams({required this.user, required this.imageUploadParams});
+  final ImageUploadParams? imageUploadParams;
+  const UserParams({required this.user,  this.imageUploadParams});
 
   @override
   List<Object> get props => [user];

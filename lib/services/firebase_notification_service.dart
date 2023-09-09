@@ -46,8 +46,7 @@ class FirebaseNotification {
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
     log("-------- Handle Message ---------");
-    AppRouter.router.goNamed(Routes.home,
-        pathParameters: {'id1': "1", 'id2': message.data.toString()});
+    AppRouter.router.goNamed(Routes.home, pathParameters: {'id1': "1"});
   }
 
   Future initPushNotification() async {

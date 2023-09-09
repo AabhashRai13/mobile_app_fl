@@ -6,7 +6,7 @@ import 'package:find_scan_return_app/domain/entities/authentication.dart';
 abstract class UserRepository {
   Future<Either<Failure, Authentication>> getUser();
   Future<Either<Failure, Authentication>> updateUser(
-      Authentication user, ImageUploadParams imageUploadParams);
+      Authentication user, ImageUploadParams? imageUploadParams);
 
   Future<void> deleteUser();
 }

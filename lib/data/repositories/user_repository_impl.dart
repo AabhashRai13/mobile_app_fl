@@ -46,7 +46,7 @@ class UserRepositoryImplementation extends UserRepository {
 
   @override
   Future<Either<Failure, Authentication>> updateUser(
-      Authentication user,ImageUploadParams imageUploadParams ) async {
+      Authentication user,ImageUploadParams? imageUploadParams ) async {
     bool connection = await networkInfo.isConnected();
     if (connection) {
       try {
