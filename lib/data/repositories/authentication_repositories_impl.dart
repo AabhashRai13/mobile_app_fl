@@ -69,7 +69,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             qrId: qrId!,
             fcmToken: fCMToken!));
 
-        if (result!.accessToken != null) {
+        if (result != null && result.accessToken != null) {
           sharedPreferencesManager.putBool(
               SharedPreferencesManager.keyIsLogin, true);
           log("----- User Id ${result.id}");

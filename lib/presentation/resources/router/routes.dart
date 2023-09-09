@@ -41,27 +41,26 @@ class AppRouter {
                     const QRCodeScanerView(),
                 routes: [
                   GoRoute(
-                      path: Routes.qrCodeVerificationScreen,
-                      name: Routes.qrCodeVerificationScreen,
-                      builder: (BuildContext context, state) =>
-                          const QrCodeVerification(),
-                      routes: [
-                        GoRoute(
-                          path: Routes.signUp,
-                          name: Routes.signUp,
-                          builder: (BuildContext context, state) =>
-                              const RegisterBody(),
-                        ),
-                      ]),
+                    path: Routes.signUp,
+                    name: Routes.signUp,
+                    builder: (BuildContext context, state) =>
+                        const RegisterBody(),
+                  ),
                 ]),
           ]),
+    
       GoRoute(
-          path: Routes.home,
-          name: Routes.home,
-          builder: (BuildContext context, state) => Home(
-                pageIndex: state.pathParameters['id1'],
-              ),
+        path: Routes.qrCodeVerificationScreen,
+        name: Routes.qrCodeVerificationScreen,
+        builder: (BuildContext context, state) => const QrCodeVerification(),
+      ),
+      GoRoute(
+        path: Routes.home,
+        name: Routes.home,
+        builder: (BuildContext context, state) => Home(
+          pageIndex: state.pathParameters['id1'],
         ),
+      ),
       GoRoute(
           path: Routes.updateUser,
           name: Routes.updateUser,

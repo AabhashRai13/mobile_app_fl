@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:find_scan_return_app/app/di.dart';
 import 'package:find_scan_return_app/app/preferences/secured_storage_manager.dart';
 import 'package:find_scan_return_app/app/preferences/shared_preferences_manager.dart';
@@ -42,10 +40,8 @@ class SplashScreenServices {
   /// function to check if token is empty and navigate accordingly
   _goNext(BuildContext context) {
     if (token == null) {
-      log("is null");
       if (context.mounted) context.goNamed(Routes.initialScreenRoute);
     } else {
-      log("is not null");
       if (context.mounted) {
         context.goNamed(Routes.home, pathParameters: {
           'id1': "0",

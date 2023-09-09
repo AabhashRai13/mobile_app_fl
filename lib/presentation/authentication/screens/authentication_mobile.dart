@@ -20,7 +20,6 @@ class LoginPageMobile extends StatefulWidget {
 class _LoginPageMobileState extends State<LoginPageMobile> {
   final AuthenticationCubit authenticationCubit = sl<AuthenticationCubit>();
  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

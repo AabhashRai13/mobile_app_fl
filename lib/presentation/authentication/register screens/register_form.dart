@@ -51,8 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text(AppStrings.loginSuccess)),
             );
-            context.pushReplacementNamed(Routes.home,
-                pathParameters: {'id1': 0.toString()});
+            context.goNamed(Routes.home, pathParameters: {'id1': 0.toString()});
           } else if (state is Error) {
             loading = false;
             ScaffoldMessenger.of(context).showSnackBar(

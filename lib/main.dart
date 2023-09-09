@@ -14,7 +14,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseNotification().initNotifications();
-
   runApp(const MyApp());
 }
 
