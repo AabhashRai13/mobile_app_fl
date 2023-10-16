@@ -47,7 +47,8 @@ class NotificationDetailPageState extends State<NotificationDetailPage> {
               Text("Phone number: ${widget.notification.phoneNumber ?? ""}",
                   style: detailTextStyle),
               const SizedBox(height: 16.0),
-              Text("Location of finding: ${widget.notification.location ?? ""}",
+              Text(
+                  "Where you can find the ${widget.notification.name}: ${widget.notification.location ?? ""}",
                   style: detailTextStyle),
               const SizedBox(height: 16.0),
               Text("Message: ${widget.notification.customMsg ?? ""}",

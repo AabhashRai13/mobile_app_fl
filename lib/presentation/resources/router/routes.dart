@@ -48,7 +48,6 @@ class AppRouter {
                   ),
                 ]),
           ]),
-    
       GoRoute(
         path: Routes.qrCodeVerificationScreen,
         name: Routes.qrCodeVerificationScreen,
@@ -72,7 +71,6 @@ class AppRouter {
           }),
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
-  
   );
 
   static Future<String?> homeRedirect(BuildContext context, state) async {
